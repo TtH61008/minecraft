@@ -77,10 +77,22 @@ async def on_message(message):
             await message.channel.send(m)
 
 def start_server(project, zone, instance):
-    compute.instances().start(project=project, zone=zone, instance=instance).execute()
+    for _ in range(3):
+        try:
+            compute.instances().start(project=project, zone=zone, instance=instance).execute()
+            sleep(1)
+            break
+        except:
+            pass
 
 def stop_server(project, zone, instance):
-    compute.instances().stop(project=project, zone=zone, instance=instance).execute()
+    for _ in range(3):
+        try:
+            compute.instances().stop(project=project, zone=zone, instance=instance).execute()
+            sleep(1)
+            break
+        except:
+            pass
 
 def get_server_status(project, zone, instance):
     res = compute.instances().get(project=project, zone=zone, instance=instance).execute()
